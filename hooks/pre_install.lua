@@ -19,7 +19,7 @@ local function get_platform()
       ["arm64"] = "macos_apple_silicon",
     },
     ["linux"] = {
-      ["amd64"] = "linux_amd64",
+      ["amd64"] = "linux_x86_64",
       ["arm64"] = "linux_arm64",
     },
   }
