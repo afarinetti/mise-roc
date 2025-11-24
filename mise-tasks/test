@@ -12,10 +12,10 @@ mise install roc@alpha4-rolling
 output=$(mise exec "roc@alpha4-rolling" -- "roc" --version)
 echo "roc output: $output"
 
-if echo "$output" | egrep -q 'roc nightly.*commit d73ea109cc2'; then
+if echo "$output" | grep -q 'roc nightly pre-release, built from commit d73ea109'; then
     echo "✓ Tests passed"
 else
-    echo "✗ Test failed: expected version roc@alpha4-rolling"
+    echo "✗ Test failed: expected version 'roc nightly pre-release, built from commit d73ea109'"
     exit 1
 fi
 
