@@ -33,50 +33,32 @@ local function get_platform()
   return "linux_x86_64"
 end
 
--- local function fetch_checksum(version)
---   local http = require("http")
---   local json = require("json")
--- end
-
 function PLUGIN:PreInstall(ctx)
   local version = ctx.version
   -- ctx.runtimeVersion contains the full version string if needed
 
-  -- print(getmetatable(ctx))
-  -- print(ctx.runtimeVersion)
-  -- print(ctx.addition.assets)
+  -- base roc download URL
+  local download_url = "https://github.com/roc-lang/roc/releases/download/"
 
-  -- Example 1: Simple binary download
-  -- local url = "https://github.com/<GITHUB_USER>/<GITHUB_REPO>/releases/download/v" .. version .. "/<TOOL>-linux-amd64"
+  -- build roc platform specific tar.gz URL (mise will extract automatically)
+  local platform = get_platform()
+  local url = download_url .. version .. "/roc-" .. platform .. "-" .. version .. ".tar.gz"
 
-  -- Example 2: Platform-specific binary
-  -- local platform = get_platform() -- Uncomment the helper function above
-  -- local url = "https://github.com/roc-lang/roc/releases/download/" .. version .. "/<TOOL>-" .. platform
+  -- build roc docs URL
+  local docs_url = download_url .. version .. "/docs.tar.gz"
 
-  -- Example 3: Archive (tar.gz, zip) - mise will extract automatically
-  local platform = get_platform() -- Uncomment the helper function above
-  local url = "https://github.com/roc-lang/roc/releases/download/" ..
-      version .. "/roc-" .. platform .. "-" .. version .. ".tar.gz"
-
-  -- Example 4: Raw file from repository
-  -- local url = "https://raw.githubusercontent.com/<GITHUB_USER>/<GITHUB_REPO>/" .. version .. "/bin/<TOOL>"
-
-  -- Replace with your actual download URL pattern
-  -- local url = "https://example.com/<TOOL>/releases/download/" .. version .. "/<TOOL>"
-
-  -- Optional: Fetch checksum for verification
-  -- local sha256 = fetch_checksum(version) -- Implement if checksums are available
+  -- file checksum handled by mise github backend
 
   return {
     version = version,
     url = url,
-    -- sha256 = sha256, -- Optional but recommended for security
+    -- sha256 = sha256, -- handled by mise github backend
     note = "Downloading roc " .. version,
-    -- addition = { -- Optional: download additional components
-    --     {
-    --         name = "component",
-    --         url = "https://example.com/component.tar.gz"
-    --     }
-    -- }
+    addition = { -- Optional: download additional components
+      {
+        name = "roc-docs",
+        url = docs_url,
+      }
+    }
   }
 end

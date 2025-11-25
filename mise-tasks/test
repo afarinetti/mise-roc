@@ -6,8 +6,6 @@ mise plugin link --force roc .
 mise cache clear
 mise install roc@alpha4-rolling
 
-# echo $(which "roc")
-
 # Capture and display the output while also verifying it
 output=$(mise exec "roc@alpha4-rolling" -- "roc" --version)
 echo "roc output: $output"
@@ -19,5 +17,6 @@ else
     exit 1
 fi
 
+# cleanup
 mise plugin uninstall roc
 mise uninstall roc@alpha4-rolling

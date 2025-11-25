@@ -6,11 +6,7 @@ function PLUGIN:Available(ctx)
   local http = require("http")
   local json = require("json")
 
-  -- Example 1: GitHub Tags API (most common)
-  -- Replace <GITHUB_USER>/<GITHUB_REPO> with your tool's repository
-  -- local repo_url = "https://api.github.com/repos/<GITHUB_USER>/<GITHUB_REPO>/tags"
-
-  -- Example 2: GitHub Releases API (for tools that use GitHub releases)
+  -- GitHub Releases API (for tools that use GitHub releases)
   local repo_url = "https://api.github.com/repos/roc-lang/roc/releases"
 
   -- mise automatically handles GitHub authentication - no manual token setup needed
@@ -30,7 +26,8 @@ function PLUGIN:Available(ctx)
 
   -- Process tags/releases
   for _, tag_info in ipairs(tags) do
-    local version = tag_info.name
+    -- local version = tag_info.name
+    local version = tag_info.tag_name
     -- local tag_name = tag_info.tag_name
     -- local updated_at = tag_info.updated_at
 
@@ -46,8 +43,8 @@ function PLUGIN:Available(ctx)
       version = version,
       note = nil, -- Optional: "latest", "lts", "pre-release", etc.
       addition = {
-        -- assets = tag_info.assets
-      } -- Optional: additional tools/components
+        { name = "roc-docs", version = version }
+      }
     })
   end
 
